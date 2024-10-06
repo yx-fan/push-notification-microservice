@@ -1,0 +1,14 @@
+title Push Notification System Sequence Diagram
+
+participant "Mobile App Frontend" as Frontend
+participant "Chat Backend" as Backend
+participant "Database" as DB
+participant "Push Notification Service" as PushService
+participant "Notification Provider (Firebase/APNs)" as Provider
+
+Frontend -> Backend: Send token, platform, region
+Backend -> DB: Store token, platform, region
+Backend -> PushService: Send notification request (token, title, body, platform, region)
+PushService -> PushService: Select provider based on platform and region
+PushService -> Provider: Send notification (token, title, body)
+Provider -> Frontend: Deliver notification

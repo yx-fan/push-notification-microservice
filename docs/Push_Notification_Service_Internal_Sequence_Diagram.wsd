@@ -1,0 +1,16 @@
+title Push Notification Service Internal Sequence Diagram
+
+participant "API Layer" as API
+participant "Notification Service" as Service
+participant "PlatformRegionHandler" as Handler
+participant "NotificationProvider (e.g., FirebaseProvider, APNsProvider)" as Provider
+participant "Database" as DB
+
+API -> Service: Receive notification request
+Service -> DB: Fetch token, platform, region
+Service -> Handler: Determine appropriate provider based on platform and region
+Handler -> Provider: Get the selected provider
+Service -> Provider: Send notification (token, title, body, data)
+Provider -> Provider: Send notification to the device
+Provider -> Service: Return status of notification
+Service -> API: Send response back to API
